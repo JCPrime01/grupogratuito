@@ -283,10 +283,15 @@ body{
 }
 
 .secondary{
-  color:#9196a5;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  color:#35e07f;
   font-size:11px;
-  text-decoration:none;
-  border-bottom:1px dashed rgba(255,255,255,.18);
+  font-weight:700;
+  text-decoration:underline;
+  text-underline-offset:3px;
   padding-bottom:2px;
 }
 
@@ -304,9 +309,23 @@ body{
 }
 
 .responsible{
-  color:#a8acb7;
+  color:#d0d2d8;
   font-size:10px;
   font-weight:700;
+}
+
+.legal-links{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  margin-top:2px;
+}
+
+.legal-links a{
+  color:#a8acb7;
+  text-decoration:underline;
+  text-underline-offset:2px;
 }
 
 @media (max-height:740px){
@@ -519,18 +538,37 @@ body{
       QUERO ENTRAR AGORA
     </a>
 
-    <a class="secondary" href="#" onclick="return false;">
-      Clique aqui se você não tiver Telegram
+    <!-- TROQUE O LINK ABAIXO PELO SEU WHATSAPP -->
+    <a
+      class="secondary"
+      href="https://wa.me/55SEUNUMERO"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <span aria-hidden="true">◉</span>
+      CLIQUE AQUI SE VOCÊ NÃO TIVER TELEGRAM
     </a>
 
   </section>
 
   <footer class="footer">
-    <div class="responsible">🔞 Jogue com responsabilidade</div>
+    <div class="responsible">🔞 Jogue com Responsabilidade</div>
+
     <div>
-      Este site não garante resultados financeiros. Aposte apenas valores que você pode perder.
+      Este site não é do Facebook. Este site não faz parte do site do Facebook ou do Facebook Inc.
+      Além disso, este site NÃO é endossado pelo Facebook de nenhuma maneira.
+      FACEBOOK é uma marca comercial independente da FACEBOOK, Inc.
     </div>
+
     <div>Todos os direitos reservados © 2026</div>
+
+    <div class="legal-links">
+      <a href="https://lp-maguinho-tl-es.vercel.app/termos-de-uso.html"
+         target="_blank" rel="noopener noreferrer">Termos de Uso</a>
+      <span>|</span>
+      <a href="https://lp-maguinho-tl-es.vercel.app/politica-de-privacidade.html"
+         target="_blank" rel="noopener noreferrer">Política de Privacidade</a>
+    </div>
   </footer>
 
 </main>
