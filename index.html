@@ -1,367 +1,554 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Acesso Liberado</title>
-
-<!-- META PIXEL -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-
-fbq('init', '1810593296281203');
-fbq('track', 'PageView');
-</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>Grupo Gratuito</title>
+<meta name="description" content="Entre no grupo gratuito no Telegram e acompanhe as próximas análises." />
 
 <style>
-* {
-    box-sizing: border-box;
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
+:root{
+  --bg:#07070a;
+  --panel:#0f1017;
+  --text:#ffffff;
+  --muted:#b8bbc7;
+  --blue:#29a9ea;
+  --purple:#7c4dff;
+  --green:#35e07f;
 }
 
-body {
-    font-family: Arial, Helvetica, sans-serif;
+html,body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+}
+
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 50% 18%, rgba(41,169,234,.20), transparent 28%),
+    radial-gradient(circle at 75% 30%, rgba(124,77,255,.14), transparent 24%),
+    linear-gradient(180deg,#10111a 0%,#08090d 50%,#040406 100%);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+}
+
+/* textura de fundo */
+body:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.10;
+  background-image:
+    radial-gradient(circle, #fff 1px, transparent 1px);
+  background-size:22px 22px;
+  mask-image:linear-gradient(to bottom, transparent 0%, #000 18%, #000 80%, transparent 100%);
+  z-index:0;
+}
+
+/* CAMPO DE FUTEBOL ANIMADO */
+.pitch-motion{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.pitch-motion svg{
+  position:absolute;
+  width:128%;
+  height:88%;
+  left:50%;
+  top:51%;
+  transform:translate(-50%,-50%) perspective(800px) rotateX(60deg) scale(1.1);
+  transform-origin:center center;
+  opacity:.17;
+  filter:drop-shadow(0 0 8px rgba(53,224,127,.12));
+}
+
+.pitch-line{
+  fill:none;
+  stroke:rgba(84,255,151,.80);
+  stroke-width:2.2;
+  vector-effect:non-scaling-stroke;
+  stroke-dasharray:1700;
+  stroke-dashoffset:1700;
+  animation:drawPitch 7s ease-in-out infinite;
+}
+
+.pitch-line.delay-1{ animation-delay:.25s; }
+.pitch-line.delay-2{ animation-delay:.45s; }
+.pitch-line.delay-3{ animation-delay:.65s; }
+.pitch-line.delay-4{ animation-delay:.85s; }
+
+@keyframes drawPitch{
+  0%{
+    stroke-dashoffset:1700;
+    opacity:.08;
+  }
+  32%{
+    stroke-dashoffset:0;
+    opacity:.95;
+  }
+  72%{
+    stroke-dashoffset:0;
+    opacity:.55;
+  }
+  100%{
+    stroke-dashoffset:-1700;
+    opacity:.05;
+  }
+}
+
+/* brilho suave passando pelo campo */
+.pitch-glow{
+  position:absolute;
+  width:150%;
+  height:46%;
+  left:-25%;
+  top:31%;
+  background:linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(53,224,127,0) 35%,
+    rgba(53,224,127,.08) 50%,
+    rgba(53,224,127,0) 65%,
+    transparent 100%
+  );
+  transform:rotate(-8deg);
+  filter:blur(20px);
+  animation:sweep 7s linear infinite;
+}
+
+@keyframes sweep{
+  0%{ transform:translateX(-35%) rotate(-8deg); opacity:0; }
+  18%{ opacity:.8; }
+  50%{ opacity:.45; }
+  82%{ opacity:.8; }
+  100%{ transform:translateX(35%) rotate(-8deg); opacity:0; }
+}
+
+.page{
+  position:relative;
+  z-index:2;
+  width:100%;
+  max-width:430px;
+  height:100dvh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-between;
+  padding:8px 16px 10px;
+}
+
+.top-status{
+  margin-top:4px;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:7px 12px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.04);
+  color:#dfe9f1;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.5px;
+  backdrop-filter:blur(4px);
+}
+
+.top-status .dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 12px rgba(53,224,127,.9);
+}
+
+.hero{
+  flex:1;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+}
+
+.photo-wrap{
+  width:100%;
+  height:min(38vh,330px);
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  position:relative;
+}
+
+.photo-wrap:before{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:12%;
+  transform:translateX(-50%);
+  width:280px;
+  height:190px;
+  background:radial-gradient(circle, rgba(41,169,234,.25), transparent 70%);
+  filter:blur(12px);
+}
+
+.photo{
+  width:min(390px,96vw);
+  max-height:100%;
+  object-fit:contain;
+  object-position:center bottom;
+  position:relative;
+  z-index:1;
+  filter:drop-shadow(0 22px 35px rgba(0,0,0,.55));
+}
+
+.kicker{
+  color:#d8dbe3;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+}
+
+.kicker span{
+  color:#ffcc3d;
+}
+
+.headline{
+  text-align:center;
+  font-size:39px;
+  line-height:.92;
+  font-weight:950;
+  letter-spacing:-1.8px;
+  text-transform:uppercase;
+}
+
+.headline .accent{
+  display:block;
+  color:#43b9f2;
+  text-shadow:0 0 28px rgba(67,185,242,.28);
+}
+
+.sub{
+  max-width:340px;
+  text-align:center;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.45;
+}
+
+.sub strong{
+  color:#fff;
+}
+
+.cta{
+  width:min(360px,100%);
+  min-height:58px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  border-radius:15px;
+  text-decoration:none;
+  color:#fff;
+  background:linear-gradient(135deg,#2aabee,#1889c9);
+  font-size:17px;
+  font-weight:950;
+  letter-spacing:.2px;
+  box-shadow:
+    0 14px 34px rgba(42,171,238,.25),
+    inset 0 1px 0 rgba(255,255,255,.24);
+  animation:pulse 1.6s infinite;
+}
+
+.cta svg{
+  width:24px;
+  height:24px;
+}
+
+@keyframes pulse{
+  0%{
+    transform:scale(1);
+    box-shadow:0 0 0 0 rgba(42,171,238,.38),0 14px 34px rgba(42,171,238,.22);
+  }
+  70%{
+    transform:scale(1.035);
+    box-shadow:0 0 0 14px rgba(42,171,238,0),0 16px 38px rgba(42,171,238,.30);
+  }
+  100%{
+    transform:scale(1);
+    box-shadow:0 0 0 0 rgba(42,171,238,0),0 14px 34px rgba(42,171,238,.22);
+  }
+}
+
+.secondary{
+  color:#9196a5;
+  font-size:11px;
+  text-decoration:none;
+  border-bottom:1px dashed rgba(255,255,255,.18);
+  padding-bottom:2px;
+}
+
+.footer{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:5px;
+  padding-top:7px;
+  color:#686c78;
+  font-size:9px;
+  text-align:center;
+  line-height:1.35;
+}
+
+.responsible{
+  color:#a8acb7;
+  font-size:10px;
+  font-weight:700;
+}
+
+@media (max-height:740px){
+  .photo-wrap{
+    height:min(34vh,260px);
+  }
+
+  .headline{
+    font-size:34px;
+  }
+
+  .hero{
+    gap:8px;
+  }
+
+  .cta{
+    min-height:52px;
+    font-size:16px;
+  }
+
+  .footer{
+    font-size:8px;
+  }
+}
+
+@media (min-width:900px){
+  body{
     background:
-        radial-gradient(circle at 50% 28%, rgba(0, 210, 110, .20) 0%, rgba(0, 0, 0, 0) 34%),
-        radial-gradient(circle at center, #0b2118 0%, #030504 68%, #000 100%);
-    color: #fff;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+      radial-gradient(circle at center, rgba(41,169,234,.14), transparent 25%),
+      linear-gradient(135deg,#090a10 0%,#040406 100%);
+  }
+
+  .page{
+    background:rgba(8,9,13,.22);
+    box-shadow:0 0 80px rgba(0,0,0,.55);
+  }
+
+  .pitch-motion svg{
+    width:90%;
+    height:78%;
+    opacity:.16;
+  }
 }
 
-.container {
-    width: 100%;
-    max-width: 430px;
-    height: 100dvh;
-    padding: 10px 0 0 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-}
+/* respeita usuários que preferem menos animação */
+@media (prefers-reduced-motion:reduce){
+  .pitch-line,
+  .pitch-glow,
+  .cta{
+    animation:none;
+  }
 
-.container::before {
-    content: "";
-    position: absolute;
-    top: 17%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 290px;
-    height: 290px;
-    border-radius: 50%;
-    background: rgba(0,255,128,.08);
-    filter: blur(38px);
-    z-index: 0;
-}
-
-.main-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-    width: 100%;
-    padding: 0 20px;
-    flex: 1;
-    position: relative;
-    z-index: 1;
-}
-
-.badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    background: rgba(0,255,102,.10);
-    color: #6dff9e;
-    border: 1px solid rgba(0,255,102,.25);
-    border-radius: 999px;
-    padding: 7px 12px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .5px;
-    text-transform: uppercase;
-}
-
-.badge-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #00ff66;
-    box-shadow: 0 0 12px rgba(0,255,102,.9);
-}
-
-.profile-wrap {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.profile-wrap::before {
-    content: "";
-    position: absolute;
-    width: 225px;
-    height: 225px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0,255,102,.22), rgba(0,255,102,0) 68%);
-    filter: blur(8px);
-}
-
-.profile-img {
-    max-width: 255px;
-    width: 62vw;
-    height: auto;
-    object-fit: contain;
-    position: relative;
-    z-index: 1;
-    filter: drop-shadow(0 18px 30px rgba(0,0,0,.48));
-}
-
-.title-box h1 {
-    font-size: 31px;
-    color: #00ff66;
-    margin: 0 0 7px 0;
-    font-weight: 900;
-    line-height: 1.03;
-    letter-spacing: -.8px;
-}
-
-.title-box h1 span {
-    color: #fff;
-}
-
-.subtext {
-    font-size: 15px;
-    color: #d4d4d4;
-    margin: 0 auto;
-    max-width: 330px;
-    line-height: 1.4;
-}
-
-.subtext strong {
-    color: #fff;
-}
-
-.btn-wrapper {
-    margin-top: 8px;
-    margin-bottom: 8px;
-    width: 100%;
-}
-
-.button {
-    width: min(100%, 350px);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 11px;
-    background: linear-gradient(135deg, #00e85f, #00b94f);
-    color: #06110a;
-    padding: 17px 28px;
-    font-size: 18px;
-    font-weight: 900;
-    border-radius: 14px;
-    text-decoration: none;
-    transition: .25s ease;
-    animation: pulse 1.6s infinite;
-    box-shadow: 0 10px 32px rgba(0,255,102,.22);
-}
-
-.button:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.08);
-}
-
-.telegram-icon {
-    width: 24px;
-    height: 24px;
-    display: inline-block;
-}
-
-.microcopy {
-    color: #8b9b91;
-    font-size: 11px;
-    margin-top: 8px;
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(0,255,102,.45), 0 10px 32px rgba(0,255,102,.18);
-    }
-    70% {
-        transform: scale(1.035);
-        box-shadow: 0 0 0 14px rgba(0,255,102,0), 0 12px 38px rgba(0,255,102,.26);
-    }
-    100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(0,255,102,0), 0 10px 32px rgba(0,255,102,.18);
-    }
-}
-
-.footer-wrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 7px;
-    position: relative;
-    z-index: 1;
-}
-
-.alert-box {
-    padding: 0 20px;
-}
-
-.alert-box h2 {
-    color: #00ff66;
-    font-size: 15px;
-    margin: 0 0 4px 0;
-}
-
-.alert-box p {
-    color: #bcbcbc;
-    font-size: 12px;
-    margin: 0;
-}
-
-.footer {
-    font-size: 10px;
-    color: #666;
-    padding: 0 20px;
-}
-
-.stamp-bottom {
-    width: 100%;
-    display: block;
-    height: auto;
-    margin: 0;
-}
-
-/* Ajuste para telas bem pequenas */
-@media (max-height: 700px) {
-    .profile-img {
-        max-width: 205px;
-    }
-
-    .title-box h1 {
-        font-size: 27px;
-    }
-
-    .button {
-        padding: 14px 24px;
-        font-size: 17px;
-    }
-
-    .main-content {
-        padding-top: 4px;
-        padding-bottom: 4px;
-    }
-}
-
-/* Desktop mantém visual de LP mobile centralizada */
-@media (min-width: 768px) {
-    body {
-        background:
-            radial-gradient(circle at center, rgba(0, 210, 110, .14), transparent 28%),
-            linear-gradient(135deg, #07140d 0%, #000 52%, #07140d 100%);
-    }
-
-    .container {
-        box-shadow: 0 0 60px rgba(0,0,0,.55);
-        background: rgba(0,0,0,.12);
-    }
+  .pitch-line{
+    stroke-dashoffset:0;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<!-- Fundo animado: campo desenhado em SVG, sem imagem -->
+<div class="pitch-motion" aria-hidden="true">
+  <div class="pitch-glow"></div>
 
-    <div class="main-content">
+  <svg viewBox="0 0 900 600" preserveAspectRatio="xMidYMid meet">
 
-        <div class="badge">
-            <span class="badge-dot"></span>
-            ACESSO LIBERADO
-        </div>
+    <!-- borda do campo -->
+    <rect
+      class="pitch-line"
+      x="80" y="60"
+      width="740" height="480"
+      rx="4"
+    />
 
-        <div class="profile-wrap">
-            <!-- SUBSTITUA PELO ARQUIVO DA SUA FOTO -->
-            <img src="foto-perfil-6.png" alt="Foto do Tipster" class="profile-img">
-        </div>
+    <!-- linha do meio -->
+    <line
+      class="pitch-line delay-1"
+      x1="450" y1="60"
+      x2="450" y2="540"
+    />
 
-        <div class="title-box">
-            <h1>
-                ENTRE NO<br>
-                <span>TELEGRAM AGORA</span>
-            </h1>
+    <!-- círculo central -->
+    <circle
+      class="pitch-line delay-2"
+      cx="450" cy="300"
+      r="72"
+    />
 
-            <p class="subtext">
-                Toque no botão abaixo para entrar no canal e acompanhar
-                <strong>as próximas entradas e atualizações.</strong>
-            </p>
-        </div>
+    <!-- ponto central -->
+    <circle
+      class="pitch-line delay-2"
+      cx="450" cy="300"
+      r="4"
+    />
 
-        <div class="btn-wrapper">
-            <!-- TROQUE O LINK ABAIXO PELO SEU TELEGRAM -->
-            <a
-                href="https://t.me/seucanal"
-                class="button"
-                onclick="trackTelegramClick()"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                <svg class="telegram-icon" viewBox="0 0 24 24" aria-hidden="true">
-                    <path fill="currentColor" d="M21.8 3.2 18.6 20c-.2 1.2-.9 1.5-1.8.9l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.4-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.1 13.8 1.3 12.3c-1-.3-1-1 .2-1.5L20.2 3.6c.9-.3 1.8.2 1.6-.4Z"/>
-                </svg>
-                ENTRAR NO TELEGRAM
-            </a>
+    <!-- grande área esquerda -->
+    <rect
+      class="pitch-line delay-2"
+      x="80" y="175"
+      width="130" height="250"
+    />
 
-            <div class="microcopy">
-                Acesso direto pelo Telegram
-            </div>
-        </div>
+    <!-- pequena área esquerda -->
+    <rect
+      class="pitch-line delay-3"
+      x="80" y="225"
+      width="58" height="150"
+    />
 
-    </div>
+    <!-- grande área direita -->
+    <rect
+      class="pitch-line delay-2"
+      x="690" y="175"
+      width="130" height="250"
+    />
 
-    <div class="footer-wrapper">
+    <!-- pequena área direita -->
+    <rect
+      class="pitch-line delay-3"
+      x="762" y="225"
+      width="58" height="150"
+    />
 
-        <div class="alert-box">
-            <h2>⚠ Entre no canal e acompanhe</h2>
-            <p>As atualizações serão publicadas diretamente por lá.</p>
-        </div>
+    <!-- marca do pênalti esquerda -->
+    <circle
+      class="pitch-line delay-4"
+      cx="170" cy="300"
+      r="4"
+    />
 
-        <div class="footer">
-            Copyright © 2026 – Todos os direitos reservados
-        </div>
+    <!-- marca do pênalti direita -->
+    <circle
+      class="pitch-line delay-4"
+      cx="730" cy="300"
+      r="4"
+    />
 
-        <!-- OPCIONAL: REMOVA ESTA LINHA SE NÃO QUISER USAR O SELO -->
-        <img src="ESPORTIVA.png" alt="Selo de jogo responsável" class="stamp-bottom">
+    <!-- meia-lua esquerda -->
+    <path
+      class="pitch-line delay-4"
+      d="M210 245 A70 70 0 0 1 210 355"
+    />
 
-    </div>
+    <!-- meia-lua direita -->
+    <path
+      class="pitch-line delay-4"
+      d="M690 245 A70 70 0 0 0 690 355"
+    />
 
+    <!-- gols -->
+    <rect
+      class="pitch-line delay-4"
+      x="58" y="258"
+      width="22" height="84"
+    />
+    <rect
+      class="pitch-line delay-4"
+      x="820" y="258"
+      width="22" height="84"
+    />
+
+  </svg>
 </div>
 
+<main class="page">
+
+  <div class="top-status">
+    <span class="dot"></span>
+    GRUPO GRATUITO DISPONÍVEL
+  </div>
+
+  <section class="hero">
+
+    <div class="photo-wrap">
+      <img
+        class="photo"
+        src="https://raw.githubusercontent.com/JCPrime01/grupogratuito-tl/main/assets/capa-cutout.png"
+        alt="Foto do analista"
+      />
+    </div>
+
+    <p class="kicker"><span>🔥</span> ACESSO GRATUITO <span>🔥</span></p>
+
+    <h1 class="headline">
+      GRUPO
+      <span class="accent">LIBERADO</span>
+    </h1>
+
+    <p class="sub">
+      Entre agora no Telegram e acompanhe
+      <strong>as próximas análises, entradas e atualizações.</strong>
+    </p>
+
+    <a
+      href="https://t.me/seucanal"
+      class="cta"
+      target="_blank"
+      rel="noopener noreferrer"
+      onclick="trackTelegramClick()"
+    >
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M21.8 3.2 18.6 20c-.2 1.2-.9 1.5-1.8.9l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.4-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.1 13.8 1.3 12.3c-1-.3-1-1 .2-1.5L20.2 3.6c.9-.3 1.8.2 1.6-.4Z"/>
+      </svg>
+      QUERO ENTRAR AGORA
+    </a>
+
+    <a class="secondary" href="#" onclick="return false;">
+      Clique aqui se você não tiver Telegram
+    </a>
+
+  </section>
+
+  <footer class="footer">
+    <div class="responsible">🔞 Jogue com responsabilidade</div>
+    <div>
+      Este site não garante resultados financeiros. Aposte apenas valores que você pode perder.
+    </div>
+    <div>Todos os direitos reservados © 2026</div>
+  </footer>
+
+</main>
+
 <script>
-function trackTelegramClick() {
-    if (typeof fbq === 'function') {
-        fbq('track', 'Lead');
-    }
+function trackTelegramClick(){
+  if(typeof fbq === "function"){
+    fbq("track","Lead");
+  }
 }
 </script>
 
